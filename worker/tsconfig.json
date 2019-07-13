@@ -12,7 +12,7 @@
         "declaration": true,
         // "declarationMap": true,
         "sourceMap": true,
-        "outFile": "../build/g3-worker.js",
+        "outFile": "../docs/build/g3-worker.js",
         // "outDir": "./",
         // "rootDir": "./",
         // "composite": true,

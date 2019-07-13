@@ -1,4 +1,4 @@
-/// <reference path="../worker/compiler/typescriptServices.d.ts" />
+/// <reference path="../../worker/compiler/typescriptServices.d.ts" />
 /// <reference lib="es2020" />
 declare const API: typeof globalThis;
 declare namespace Internal {
