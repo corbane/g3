@@ -16,18 +16,19 @@ declare namespace g3
 
     const $$ = (query: string) => Object.values (document.querySelectorAll (query))
 
-    let m_views = [] as View[]
+    let m_views  = [] as View[]
     let m_libdir = null as string
+    let m_cwd    = null as string
 
     document.addEventListener ("DOMContentLoaded", () =>
     {
         _appendKeyboardEvents ()
-        _initG3Directory ()
+        _initDirectories ()
         _initViews ()
         requestAnimationFrame (_watch)
     })
 
-    const _initG3Directory = function ()
+    const _initDirectories = function ()
     {
         var path = null as string
         
@@ -53,6 +54,19 @@ declare namespace g3
 
         if (m_libdir.substr (-1) != '/')
             m_libdir += '/'
+
+        //
+
+        m_cwd = location.href
+
+        const regex = /[^.\/]+\.html?$/i
+        const match = m_cwd.match (regex)
+
+        if(match)
+            m_cwd = m_cwd.substr (0, match.index)
+        
+        if (m_cwd.substr (-1) != '/')
+            m_cwd += '/'
     }
 
     const _initViews = function ()
@@ -76,8 +90,8 @@ declare namespace g3
             _post (wrk, G3_INIT_EVENT,
                 {
                     canvas: ofs,
-                    sketch: new URL (view.dataset.sketch, document.baseURI).href,
-                    baseUri: document.baseURI,
+                    sketch: new URL (view.dataset.sketch, m_cwd).href,
+                    baseUri: m_cwd,
                     libDirectory: m_libdir
                 },
                 [ofs]
