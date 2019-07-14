@@ -36,6 +36,7 @@
 /// <reference path="./materials/textures.ts" />
 // <reference path="./materials/glsl.ts" />
 /// <reference path="./materials/shaders.ts" />
+/// <reference path="./materials/buitin/index.ts" />
 
 /// <reference path="./geometry/transforms.ts" />
 /// <reference path="./geometry/buffers.ts" />

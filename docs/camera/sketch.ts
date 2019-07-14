@@ -7,15 +7,13 @@
 
 ;{
         
-    let sphere : IMesh
-    let shader : IShader
+    let sphere     = computeWireframe (createSphere ({ normals: true, radius: 4 }))
+    let shader     = buitinShader ("uvColor")
     let isdragging = false
     let ispan      = false
     let lastX      = 0
     let lastY      = 0
     let zoom       = 1
-    let centerX    = 0
-    let centerY    = 0
     let angleX     = 0
     let angleY     = 0
     let posX       = 0
@@ -23,39 +21,10 @@
 
     OnSetup = function ()
     {
-        sphere = createSphere({ normals: true, radius: 4 }) ; computeWireframe(sphere)
-
-        shader = createShader(`
-    
-            attribute vec3 a_vertex; // { a_vec3 ("vertex") }
-            attribute vec3 a_normal; // { a_vec3 ("avertex", sphere.points) }
-            uniform mat4   u_mvp;    // { u_mat4 ("") }
-            varying vec3   normal;
-            
-            void main()
-            {
-                normal = a_normal;
-                gl_Position = u_mvp * vec4 (a_vertex, 1.);
-            }
-        `,`
-    
-            precision highp float;
-    
-            uniform float brightness;
-            varying vec3 normal;
-            
-            void main()
-            {
-                gl_FragColor = vec4(brightness * (normal * 0.5 + 0.5), 1.0);
-            }
-        `)
 
         useCullFace()
         usePolygonOffset(1, 1)
         useDepthTest()
-        // useSquareView ()
-        // useFullscreen()
-
         setClearColor (0.8, 0.8, 0.8, 1)
         draw ()
     }

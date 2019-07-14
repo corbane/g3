@@ -31,7 +31,7 @@ declare function loadMesh         (json: object)                    : IMesh
 declare function createMesh       (options?: Internal.BufferOptions): IMesh
 declare function setDrawingMode   (mode: Internal.DrawingMode)      : void
 declare function drawMesh         (mesh: IMesh)                     : void
-declare function computeWireframe (mesh: IMesh)                     : void
+declare function computeWireframe (mesh: IMesh)                     : IMesh
 
 declare namespace Internal
 {
@@ -318,7 +318,9 @@ namespace Internal
 
         buffers.lines.data = indexer.unique
         
-		Internal.uploadBuffers(mesh.buffers)
+        Internal.uploadBuffers(mesh.buffers)
+        
+        return mesh
     }
     
     /**

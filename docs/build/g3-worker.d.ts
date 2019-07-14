@@ -1482,6 +1482,8 @@ declare namespace Internal {
         };
     };
 }
+declare type BuitinShaderNames = "uvColor";
+declare function buitinShader(name: BuitinShaderNames): IShader;
 declare function resetTransformations(): void;
 declare function pushTransformations(): void;
 declare function popTransformations(): void;
@@ -1522,7 +1524,7 @@ declare function loadMesh(json: object): IMesh;
 declare function createMesh(options?: Internal.BufferOptions): IMesh;
 declare function setDrawingMode(mode: Internal.DrawingMode): void;
 declare function drawMesh(mesh: IMesh): void;
-declare function computeWireframe(mesh: IMesh): void;
+declare function computeWireframe(mesh: IMesh): IMesh;
 declare namespace Internal {
     type Mesh = {
         onDraw?: () => void;

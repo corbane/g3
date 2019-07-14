@@ -3,36 +3,14 @@
 /// <reference path="../build/g3-worker.d.ts" />
 
 ;{
-    const cube = createBox ()
-    const shader = createShader (`
-        // Vertex Shader
-
-        attribute vec3 a_vertex;
-        attribute vec3 a_normal;
-        uniform mat4 u_mvproj;
-        varying vec3 v_normal;
-
-        void main ()
-        {
-            v_normal = a_normal;
-            gl_Position = u_mvproj * vec4 (a_vertex, 1.);
-        }
-    `,`
-        // Fragment Shader
-
-        precision highp float;
-
-        varying vec3 v_normal;
-
-        void main()
-        {
-            gl_FragColor = vec4(v_normal * 0.5 + 0.5, 1.0);
-        }
-    `)
+    const cube = computeWireframe (createBox ())
+    let shader = buitinShader ("uvColor")
 
     OnSetup = function ()
     {
         useCullFace ()
+        useDepthTest ()
+        usePolygonOffset (1, 1)
 
         usePerspectiveView (45, 0.1, 1000)
 
@@ -57,9 +35,18 @@
         scale (remap ([-1, 1], [0.1, 1.2], norm))
 
         setShaderData ({
-            u_mvproj: getTransformsProjection ()
+            u_mvp: getTransformsProjection (),
+            brightness: 1
         })
 
+        setDrawingMode ("triangles")
+        drawMesh (cube)
+
+        setShaderData ({
+            brightness: 0
+        })
+
+        setDrawingMode ("lines")
         drawMesh (cube)
     }
 

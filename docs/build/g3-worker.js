@@ -5912,6 +5912,37 @@ var BufferTarget;
     });
 }
 {
+    const buitinShader = function (name) {
+        return createShader(`
+    
+            attribute vec3 a_vertex;
+            attribute vec3 a_normal;
+            uniform mat4   u_mvp;
+            varying vec3   normal;
+            
+            void main()
+            {
+                normal = a_normal;
+                gl_Position = u_mvp * vec4 (a_vertex, 1.);
+            }
+        `, `
+
+            precision highp float;
+
+            uniform float brightness;
+            varying vec3 normal;
+            
+            void main()
+            {
+                gl_FragColor = vec4(brightness * (normal * 0.5 + 0.5), 1.0);
+            }
+        `);
+    };
+    Internal.definePublicMethods({
+        buitinShader
+    });
+}
+{
     const m_mvm = mat4();
     const m_stack = [];
     const pushTransformations = function () {
@@ -6147,6 +6178,7 @@ var Internal;
             buffers.lines = Internal.createIndexBuffer("lines");
         buffers.lines.data = indexer.unique;
         Internal.uploadBuffers(mesh.buffers);
+        return mesh;
     };
     const computeNormals = function (mesh) {
         const buffers = mesh.buffers;
