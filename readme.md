@@ -1,6 +1,6 @@
 
 Cette bibliothèque est inspirée du projet [p5.js](https://p5js.org/).
-Elle spécialement dédié aux application 3d sur des navigateurs moderne ou à son intégration dans des applications bureau à l’aide d’[electron](https://electronjs.org/)
+Elle est spécialement dédié aux application 3d sur des navigateurs moderne ou à son intégration dans des applications de bureau à l’aide d’[electron](https://electronjs.org/)
 
 Les objectifs généraux sont:
 - Dissocié l'application 3s du reste de la page web à l'aide de thread séparer (voir [OffscreenCanvas](https://developers.google.com/web/updates/2018/08/offscreen-canvas))
