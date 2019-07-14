@@ -20,25 +20,20 @@ Commencez par créer deux fichiers ; « `index.html` » et « `sketch.ts` »
 <!-- index.html -->
 <!DOCTYPE html>
 <html>
-
-<head>
-    <style>
-        canvas {
-            width: 100%;
-            height: 100vw;
-        }
-    </style>
-    <script src="./g3.js"></script>
-</head>
-
-<body>
-
-    <!-- L'attribut « data-sketch » peut définir un fichier Javascript ou Typescript.
-         Dans le cas d'un fichier Typescript le code sera automatiquement compilé -->
-    <canvas data-sketch="./sketch.ts"></canvas>
-
-</body>
-
+    <head>
+        <style>
+            canvas {
+                width: 100%;
+                height: 100vw;
+            }
+        </style>
+        <script src="./g3.js"></script>
+    </head>
+    <body>
+        <!-- L'attribut « data-sketch » peut définir un fichier Javascript ou Typescript.
+            Dans le cas d'un fichier Typescript le code sera automatiquement compilé -->
+        <canvas data-sketch="./sketch.ts"></canvas>
+    </body>
 </html>
 ```
 
@@ -52,33 +47,8 @@ Commencez par créer deux fichiers ; « `index.html` » et « `sketch.ts` »
 /// <reference path="./g3-worker.d.ts" />
 
 // Définitions d’un cube et de son shader dans la portée globale
-const cube = createBox ()
-const shader = createShader (`
-
-    // Vertex Shader
-
-    attribute vec3 a_vertex;
-    attribute vec3 a_normal;
-    uniform mat4 u_mvproj;
-    varying vec3 v_normal;
-
-    void main ()
-    {
-        v_normal = a_normal;
-        gl_Position = u_mvproj * vec4 (a_vertex, 1.);
-    }
-`,`
-    // Fragment Shader
-
-    precision highp float;
-
-    varying vec3 v_normal;
-
-    void main()
-    {
-        gl_FragColor = vec4(v_normal * 0.5 + 0.5, 1.0);
-    }
-`)
+const cube   = createBox ()
+const shader = buitinShader ("uvColor")
 
 // L'événement « OnSetup » est appelé une seule fois,
 // après que toutes les ressources de portée globale soit chargées
@@ -92,6 +62,11 @@ OnSetup = function ()
         a_vertex: cube.buffers.vertices,
         a_normal: cube.buffers.normals
     })
+}
+
+OnResize = function ()
+{
+    usePerspectiveView (45, 0.1, 1000)
 }
 
 OnDraw = function (milliseconds: number)
@@ -116,12 +91,23 @@ OnDraw = function (milliseconds: number)
     scale (remap ([-1, 1], [0.1, 1.2], sin (angle)))
 
     // Nous mettons à jour le shader actif
-    setShaderData ({
-        u_mvproj: getTransformsProjection ()
+    useShader(shader, {
+        u_mvp     : getTransformsProjection (),
+        brightness: 1
     })
 
-    // Et enfin nous dessinons le cube
-    drawMesh (cube)
+    // Ici nous dessinons les faces du cube
+    setDrawingMode ("triangles")
+    drawMesh       (cube)
+
+    // Nous re-mettons à jour le shader actif
+    setShaderUniforms({
+        brightness: 0
+    })
+
+    // Et ici nous dessinons les arrêtes du cube
+    setDrawingMode ("lines")
+    drawMesh       (cube)
 }
 
 // Lance l'animation du cube

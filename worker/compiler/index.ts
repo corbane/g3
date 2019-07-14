@@ -12,9 +12,22 @@ declare namespace Internal
         .then (ret => ret.text ())
         .then (src =>
         {
-           var output = ts.transpile (src, {
-               module: ts.ModuleKind.None
-           })
+            // https://github.com/Microsoft/TypeScript/blob/master/src/compiler/utilities.ts#L1012
+            const TriSlashRef = /^(\/\/\/\s*<reference\s+path\s*=\s*)('|")(.+?)\2.*?\/>/gm
+
+            // https://github.com/gavinhungry/typestring/blob/master/typestring.js
+
+           //src = src.replace(TriSlashRef, (m, p1, p2, filename) => 
+           //{
+           //    // refs[filename] || m);
+           //})
+
+
+            var output = ts.transpile (src, {
+                module: ts.ModuleKind.None,
+                outFile: "out.js",
+                
+            })
 
            cb (output)
         })

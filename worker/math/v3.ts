@@ -5,6 +5,15 @@ namespace v3
 {
     const same = Object.create
 
+    export function fromAngles (theta: number, phi: number)
+    {
+        return <LVec3> [
+            Math.cos (theta) * Math.cos (phi),
+            Math.sin (phi),
+            Math.sin (theta) * Math.cos (phi)
+        ]
+    }
+
     export function normalize (a: LVec3): LVec3
     {
         let x = a[0]
@@ -39,6 +48,14 @@ namespace v3
         return out;
     }
 
+    export function negate (a: LVec3, out: LVec3 = same(a)): LVec3
+    {
+        out[0] = -a[0];
+        out[1] = -a[1];
+        out[2] = -a[2];
+        return out;
+    }
+
 
 
     export function add (a: LVec3, b: LVec3, out: LVec3 = same(a)): LVec3
@@ -62,6 +79,14 @@ namespace v3
         out[0] = a[0] * b[0];
         out[1] = a[1] * b[1];
         out[2] = a[2] * b[2];
+        return out;
+    }
+
+    export function multiplyByScalar (a: LVec3, b: number, out: LVec3 = same(a)): LVec3
+    {
+        out[0] = a[0] * b;
+        out[1] = a[1] * b;
+        out[2] = a[2] * b;
         return out;
     }
 

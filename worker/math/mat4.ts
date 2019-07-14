@@ -3,6 +3,11 @@
  * @module mat4
  */
 
+ type LMat4 = mat4 | [number, number, number, number,
+                      number, number, number, number,
+                      number, number, number, number,
+                      number, number, number, number]
+
 interface mat4 extends Float32Array {}
 
 function mat4 (): mat4

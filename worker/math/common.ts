@@ -31,7 +31,10 @@ Boolean.prototype.length = 1
 type LVecN = LVec2 <number> | LVec3 <number> | LVec4 <number> 
 type LVecB = LVec2 <boolean> | LVec3 <boolean> | LVec4 <boolean> 
 
-
+const X = 0
+const Y = 1
+const Z = 2
+const W = 4
 const PI = 3.141592653589793
 const EPSILON = 0.000001
 

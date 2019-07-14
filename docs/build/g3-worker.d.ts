@@ -22,6 +22,10 @@ interface Boolean {
 }
 declare type LVecN = LVec2<number> | LVec3<number> | LVec4<number>;
 declare type LVecB = LVec2<boolean> | LVec3<boolean> | LVec4<boolean>;
+declare const X = 0;
+declare const Y = 1;
+declare const Z = 2;
+declare const W = 4;
 declare const PI = 3.141592653589793;
 declare const EPSILON = 0.000001;
 declare function radians(degrees: number): number;
@@ -282,6 +286,7 @@ declare namespace mat3 {
     const mul: typeof multiply;
     const sub: typeof subtract;
 }
+declare type LMat4 = mat4 | [number, number, number, number, number, number, number, number, number, number, number, number, number, number, number, number];
 interface mat4 extends Float32Array {
 }
 declare function mat4(): mat4;
@@ -480,6 +485,53 @@ declare function clamp<T extends number | LVecN>(n1: T, n2: T, a: T): T;
 declare function step<T extends number | LVecN>(n1: T, n2: T): T;
 declare function isnan<T extends number | LVecN>(n: T): boolean | LVecB;
 declare function isinf<T extends number | LVecN>(n: T): boolean | LVecB;
+declare namespace v3 {
+    function fromAngles(theta: number, phi: number): LVec3<number>;
+    function normalize(a: LVec3): LVec3;
+    function getNormalized(a: LVec3, out?: LVec3): LVec3;
+    function negate(a: LVec3, out?: LVec3): LVec3;
+    function add(a: LVec3, b: LVec3, out?: LVec3): LVec3;
+    function subtract(a: LVec3, b: LVec3, out?: LVec3): LVec3;
+    function multiply(a: LVec3, b: LVec3, out?: LVec3): LVec3;
+    function multiplyByScalar(a: LVec3, b: number, out?: LVec3): LVec3;
+    function divide(a: LVec3, b: LVec3, out?: LVec3): LVec3;
+    function dot(a: LVec3, b: LVec3): number;
+    function cross(a: LVec3, b: LVec3, out?: LVec3): LVec3;
+    function lerp(a: LVec3, b: LVec3, t: number, out?: LVec3): LVec3;
+    function ceil(a: LVec3, out?: LVec3): LVec3;
+    function floor(a: LVec3, out?: LVec3): LVec3;
+    function min(a: LVec3, b: LVec3, out?: LVec3): LVec3;
+    function max(a: LVec3, b: LVec3, out?: LVec3): LVec3;
+    function round(a: LVec3, out?: LVec3): LVec3;
+}
+declare namespace m4 {
+    function invert<T extends LMat4>(a: T, out?: T): T | null;
+    function multiply<T extends LMat4>(a: T, b: T, out?: T): T;
+    function transformVec3<T extends LVec3>(a: T, m: LMat4, out?: T): T;
+}
+declare class HitTest {
+    t: number;
+    hit: LVec3;
+    normal: LVec3;
+    constructor(t?: number, hit?: LVec3, normal?: LVec3);
+    mergeWith(other: HitTest): void;
+}
+declare class Raytracer {
+    eye: LVec3;
+    ray00: LVec3;
+    ray10: LVec3;
+    ray01: LVec3;
+    ray11: LVec3;
+    viewport: LVec4;
+    constructor();
+    getRayForPixel(x: number, y: number): LVec3<number>;
+}
+declare const unProject: (winX: number, winY: number, winZ: number, modelview?: LMat4, projection?: LMat4, viewport?: LVec2<number>) => vec3;
+declare namespace Raytracer {
+    const hitTestBox: (origin: LVec3<number>, ray: LVec3<number>, min: LVec3<number>, max: LVec3<number>) => HitTest;
+    const hitTestSphere: (origin: LVec3<number>, ray: LVec3<number>, center: LVec3<number>, radius: number) => HitTest;
+    const hitTestTriangle: (origin: LVec3<number>, ray: LVec3<number>, a: LVec3<number>, b: LVec3<number>, c: LVec3<number>) => HitTest;
+}
 declare const GS_EVENT_TYPE = "G3_EVENT_TYPE";
 declare namespace g3 {
     interface Message {

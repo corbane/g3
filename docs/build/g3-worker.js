@@ -34,6 +34,10 @@ var glMatrix;
 })(glMatrix || (glMatrix = {}));
 Number.prototype.length = 1;
 Boolean.prototype.length = 1;
+const X = 0;
+const Y = 1;
+const Z = 2;
+const W = 4;
 const PI = 3.141592653589793;
 const EPSILON = 0.000001;
 {
@@ -4121,6 +4125,340 @@ function quat2() {
         isinf: template1OutB((a) => a == Infinity)
     });
 }
+var v3;
+(function (v3) {
+    const same = Object.create;
+    function fromAngles(theta, phi) {
+        return [
+            Math.cos(theta) * Math.cos(phi),
+            Math.sin(phi),
+            Math.sin(theta) * Math.cos(phi)
+        ];
+    }
+    v3.fromAngles = fromAngles;
+    function normalize(a) {
+        let x = a[0];
+        let y = a[1];
+        let z = a[2];
+        let len = x * x + y * y + z * z;
+        if (len > 0) {
+            len = 1 / Math.sqrt(len);
+        }
+        a[0] = a[0] * len;
+        a[1] = a[1] * len;
+        a[2] = a[2] * len;
+        return a;
+    }
+    v3.normalize = normalize;
+    function getNormalized(a, out = same(a)) {
+        let x = a[0];
+        let y = a[1];
+        let z = a[2];
+        let len = x * x + y * y + z * z;
+        if (len > 0) {
+            len = 1 / Math.sqrt(len);
+        }
+        out[0] = a[0] * len;
+        out[1] = a[1] * len;
+        out[2] = a[2] * len;
+        return out;
+    }
+    v3.getNormalized = getNormalized;
+    function negate(a, out = same(a)) {
+        out[0] = -a[0];
+        out[1] = -a[1];
+        out[2] = -a[2];
+        return out;
+    }
+    v3.negate = negate;
+    function add(a, b, out = same(a)) {
+        out[0] = a[0] + b[0];
+        out[1] = a[1] + b[1];
+        out[2] = a[2] + b[2];
+        return out;
+    }
+    v3.add = add;
+    function subtract(a, b, out = same(a)) {
+        out[0] = a[0] - b[0];
+        out[1] = a[1] - b[1];
+        out[2] = a[2] - b[2];
+        return out;
+    }
+    v3.subtract = subtract;
+    function multiply(a, b, out = same(a)) {
+        out[0] = a[0] * b[0];
+        out[1] = a[1] * b[1];
+        out[2] = a[2] * b[2];
+        return out;
+    }
+    v3.multiply = multiply;
+    function multiplyByScalar(a, b, out = same(a)) {
+        out[0] = a[0] * b;
+        out[1] = a[1] * b;
+        out[2] = a[2] * b;
+        return out;
+    }
+    v3.multiplyByScalar = multiplyByScalar;
+    function divide(a, b, out = same(a)) {
+        out[0] = a[0] / b[0];
+        out[1] = a[1] / b[1];
+        out[2] = a[2] / b[2];
+        return out;
+    }
+    v3.divide = divide;
+    function dot(a, b) {
+        return a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
+    }
+    v3.dot = dot;
+    function cross(a, b, out = same(a)) {
+        let ax = a[0], ay = a[1], az = a[2];
+        let bx = b[0], by = b[1], bz = b[2];
+        out[0] = ay * bz - az * by;
+        out[1] = az * bx - ax * bz;
+        out[2] = ax * by - ay * bx;
+        return out;
+    }
+    v3.cross = cross;
+    function lerp(a, b, t, out = same(a)) {
+        let ax = a[0];
+        let ay = a[1];
+        let az = a[2];
+        out[0] = ax + t * (b[0] - ax);
+        out[1] = ay + t * (b[1] - ay);
+        out[2] = az + t * (b[2] - az);
+        return out;
+    }
+    v3.lerp = lerp;
+    function ceil(a, out = same(a)) {
+        out[0] = Math.ceil(a[0]);
+        out[1] = Math.ceil(a[1]);
+        out[2] = Math.ceil(a[2]);
+        return out;
+    }
+    v3.ceil = ceil;
+    function floor(a, out = same(a)) {
+        out[0] = Math.floor(a[0]);
+        out[1] = Math.floor(a[1]);
+        out[2] = Math.floor(a[2]);
+        return out;
+    }
+    v3.floor = floor;
+    function min(a, b, out = same(a)) {
+        out[0] = Math.min(a[0], b[0]);
+        out[1] = Math.min(a[1], b[1]);
+        out[2] = Math.min(a[2], b[2]);
+        return out;
+    }
+    v3.min = min;
+    function max(a, b, out = same(a)) {
+        out[0] = Math.max(a[0], b[0]);
+        out[1] = Math.max(a[1], b[1]);
+        out[2] = Math.max(a[2], b[2]);
+        return out;
+    }
+    v3.max = max;
+    function round(a, out = same(a)) {
+        out[0] = Math.round(a[0]);
+        out[1] = Math.round(a[1]);
+        out[2] = Math.round(a[2]);
+        return out;
+    }
+    v3.round = round;
+})(v3 || (v3 = {}));
+var m4;
+(function (m4) {
+    const same = Object.create;
+    function invert(a, out = same(a)) {
+        const a00 = a[0], a01 = a[1], a02 = a[2], a03 = a[3];
+        const a10 = a[4], a11 = a[5], a12 = a[6], a13 = a[7];
+        const a20 = a[8], a21 = a[9], a22 = a[10], a23 = a[11];
+        const a30 = a[12], a31 = a[13], a32 = a[14], a33 = a[15];
+        const b00 = a00 * a11 - a01 * a10;
+        const b01 = a00 * a12 - a02 * a10;
+        const b02 = a00 * a13 - a03 * a10;
+        const b03 = a01 * a12 - a02 * a11;
+        const b04 = a01 * a13 - a03 * a11;
+        const b05 = a02 * a13 - a03 * a12;
+        const b06 = a20 * a31 - a21 * a30;
+        const b07 = a20 * a32 - a22 * a30;
+        const b08 = a20 * a33 - a23 * a30;
+        const b09 = a21 * a32 - a22 * a31;
+        const b10 = a21 * a33 - a23 * a31;
+        const b11 = a22 * a33 - a23 * a32;
+        let det = b00 * b11 - b01 * b10 + b02 * b09 + b03 * b08 - b04 * b07 + b05 * b06;
+        if (!det) {
+            return null;
+        }
+        det = 1.0 / det;
+        out[0] = (a11 * b11 - a12 * b10 + a13 * b09) * det;
+        out[1] = (a02 * b10 - a01 * b11 - a03 * b09) * det;
+        out[2] = (a31 * b05 - a32 * b04 + a33 * b03) * det;
+        out[3] = (a22 * b04 - a21 * b05 - a23 * b03) * det;
+        out[4] = (a12 * b08 - a10 * b11 - a13 * b07) * det;
+        out[5] = (a00 * b11 - a02 * b08 + a03 * b07) * det;
+        out[6] = (a32 * b02 - a30 * b05 - a33 * b01) * det;
+        out[7] = (a20 * b05 - a22 * b02 + a23 * b01) * det;
+        out[8] = (a10 * b10 - a11 * b08 + a13 * b06) * det;
+        out[9] = (a01 * b08 - a00 * b10 - a03 * b06) * det;
+        out[10] = (a30 * b04 - a31 * b02 + a33 * b00) * det;
+        out[11] = (a21 * b02 - a20 * b04 - a23 * b00) * det;
+        out[12] = (a11 * b07 - a10 * b09 - a12 * b06) * det;
+        out[13] = (a00 * b09 - a01 * b07 + a02 * b06) * det;
+        out[14] = (a31 * b01 - a30 * b03 - a32 * b00) * det;
+        out[15] = (a20 * b03 - a21 * b01 + a22 * b00) * det;
+        return out;
+    }
+    m4.invert = invert;
+    function multiply(a, b, out = same(a)) {
+        const a00 = a[0], a01 = a[1], a02 = a[2], a03 = a[3];
+        const a10 = a[4], a11 = a[5], a12 = a[6], a13 = a[7];
+        const a20 = a[8], a21 = a[9], a22 = a[10], a23 = a[11];
+        const a30 = a[12], a31 = a[13], a32 = a[14], a33 = a[15];
+        let b0 = b[0], b1 = b[1], b2 = b[2], b3 = b[3];
+        out[0] = b0 * a00 + b1 * a10 + b2 * a20 + b3 * a30;
+        out[1] = b0 * a01 + b1 * a11 + b2 * a21 + b3 * a31;
+        out[2] = b0 * a02 + b1 * a12 + b2 * a22 + b3 * a32;
+        out[3] = b0 * a03 + b1 * a13 + b2 * a23 + b3 * a33;
+        b0 = b[4];
+        b1 = b[5];
+        b2 = b[6];
+        b3 = b[7];
+        out[4] = b0 * a00 + b1 * a10 + b2 * a20 + b3 * a30;
+        out[5] = b0 * a01 + b1 * a11 + b2 * a21 + b3 * a31;
+        out[6] = b0 * a02 + b1 * a12 + b2 * a22 + b3 * a32;
+        out[7] = b0 * a03 + b1 * a13 + b2 * a23 + b3 * a33;
+        b0 = b[8];
+        b1 = b[9];
+        b2 = b[10];
+        b3 = b[11];
+        out[8] = b0 * a00 + b1 * a10 + b2 * a20 + b3 * a30;
+        out[9] = b0 * a01 + b1 * a11 + b2 * a21 + b3 * a31;
+        out[10] = b0 * a02 + b1 * a12 + b2 * a22 + b3 * a32;
+        out[11] = b0 * a03 + b1 * a13 + b2 * a23 + b3 * a33;
+        b0 = b[12];
+        b1 = b[13];
+        b2 = b[14];
+        b3 = b[15];
+        out[12] = b0 * a00 + b1 * a10 + b2 * a20 + b3 * a30;
+        out[13] = b0 * a01 + b1 * a11 + b2 * a21 + b3 * a31;
+        out[14] = b0 * a02 + b1 * a12 + b2 * a22 + b3 * a32;
+        out[15] = b0 * a03 + b1 * a13 + b2 * a23 + b3 * a33;
+        return out;
+    }
+    m4.multiply = multiply;
+    function transformVec3(a, m, out = same(a)) {
+        let x = a[0], y = a[1], z = a[2];
+        let w = m[3] * x + m[7] * y + m[11] * z + m[15];
+        w = w || 1.0;
+        out[0] = (m[0] * x + m[4] * y + m[8] * z + m[12]) / w;
+        out[1] = (m[1] * x + m[5] * y + m[9] * z + m[13]) / w;
+        out[2] = (m[2] * x + m[6] * y + m[10] * z + m[14]) / w;
+        return out;
+    }
+    m4.transformVec3 = transformVec3;
+})(m4 || (m4 = {}));
+class HitTest {
+    constructor(t, hit, normal) {
+        this.t = arguments.length ? t : Number.MAX_VALUE;
+        this.hit = hit;
+        this.normal = normal;
+    }
+    mergeWith(other) {
+        if (other.t > 0 && other.t < this.t) {
+            this.t = other.t;
+            this.hit = other.hit;
+            this.normal = other.normal;
+        }
+    }
+}
+;
+class Raytracer {
+    constructor() {
+        var v = gl.getParameter(gl.VIEWPORT);
+        var m = getTransforms();
+        var axisX = vec3(m[0], m[4], m[8]);
+        var axisY = vec3(m[1], m[5], m[9]);
+        var axisZ = vec3(m[2], m[6], m[10]);
+        var offset = vec3(m[3], m[7], m[11]);
+        this.eye = vec3(-v3.dot(offset, axisX), -v3.dot(offset, axisY), -v3.dot(offset, axisZ));
+        var minX = v[0], maxX = minX + v[2];
+        var minY = v[1], maxY = minY + v[3];
+        this.ray00 = v3.subtract(unProject(minX, minY, 1), this.eye);
+        this.ray10 = v3.subtract(unProject(maxX, minY, 1), this.eye);
+        this.ray01 = v3.subtract(unProject(minX, maxY, 1), this.eye);
+        this.ray11 = v3.subtract(unProject(maxX, maxY, 1), this.eye);
+        this.viewport = v;
+    }
+    getRayForPixel(x, y) {
+        x = (x - this.viewport[0]) / this.viewport[2];
+        y = 1 - (y - this.viewport[1]) / this.viewport[3];
+        var ray0 = v3.lerp(this.ray00, this.ray10, x);
+        var ray1 = v3.lerp(this.ray01, this.ray11, x);
+        return v3.normalize(v3.lerp(ray0, ray1, y));
+    }
+}
+;
+const unProject = function (winX, winY, winZ, modelview, projection, viewport) {
+    modelview = modelview || getTransforms();
+    projection = projection || getProjectionMatrix();
+    viewport = viewport || gl.getParameter(gl.VIEWPORT);
+    var point = vec3((winX - viewport[0]) / viewport[2] * 2 - 1, (winY - viewport[1]) / viewport[3] * 2 - 1, winZ * 2 - 1);
+    const mvp = m4.multiply(projection, modelview);
+    return m4.transformVec3(point, m4.invert(mvp));
+};
+(function (Raytracer) {
+    const M = Math;
+    Raytracer.hitTestBox = function (origin, ray, min, max) {
+        const tMin = v3.divide(v3.subtract(min, origin), ray);
+        const tMax = v3.divide(v3.subtract(max, origin), ray);
+        const t1 = v3.min(tMin, tMax);
+        const t2 = v3.max(tMin, tMax);
+        const tNear = M.max(M.max(t1[0], t1[1]), t1[3]);
+        const tFar = M.max(M.max(t2[0], t2[1]), t2[3]);
+        if (tNear > 0 && tNear < tFar) {
+            const epsilon = [1.0e-6, 1.0e-6, 1.0e-6];
+            const hit = v3.add(origin, v3.multiply(ray, [tNear, tNear, tNear]));
+            min = v3.add(min, epsilon);
+            max = v3.subtract(max, epsilon);
+            return new HitTest(tNear, hit, vec3((hit[0] > max[0] ? 1 : 0) - (hit[0] < min[0] ? 1 : 0), (hit[1] > max[1] ? 1 : 0) - (hit[1] < min[1] ? 1 : 0), (hit[2] > max[2] ? 1 : 0) - (hit[2] < min[2] ? 1 : 0)));
+        }
+        return null;
+    };
+    Raytracer.hitTestSphere = function (origin, ray, center, radius) {
+        var offset = v3.subtract(origin, center);
+        var a = v3.dot(ray, ray);
+        var b = 2 * v3.dot(ray, offset);
+        var c = v3.dot(offset, offset) - radius * radius;
+        var discriminant = b * b - 4 * a * c;
+        if (discriminant > 0) {
+            var t = (-b - M.sqrt(discriminant)) / (2 * a);
+            var hit = v3.add(origin, v3.multiply(ray, [t, t, t]));
+            return new HitTest(t, hit, v3.divide(v3.subtract(hit, center), [radius, radius, radius]));
+        }
+        return null;
+    };
+    Raytracer.hitTestTriangle = function (origin, ray, a, b, c) {
+        var ab = v3.subtract(b, a);
+        var ac = v3.subtract(c, a);
+        var normal = v3.normalize(v3.cross(ab, ac));
+        var t = v3.dot(normal, v3.subtract(a, origin)) / v3.dot(normal, ray);
+        if (t > 0) {
+            var hit = v3.add(origin, v3.multiply(ray, [t, t, t]));
+            var toHit = v3.subtract(hit, a);
+            var dot00 = v3.dot(ac, ac);
+            var dot01 = v3.dot(ac, ab);
+            var dot02 = v3.dot(ac, toHit);
+            var dot11 = v3.dot(ab, ab);
+            var dot12 = v3.dot(ab, toHit);
+            var divide = dot00 * dot11 - dot01 * dot01;
+            var u = (dot11 * dot02 - dot01 * dot12) / divide;
+            var v = (dot00 * dot12 - dot01 * dot02) / divide;
+            if (u >= 0 && v >= 0 && u + v <= 1)
+                return new HitTest(t, hit, normal);
+        }
+        return null;
+    };
+})(Raytracer || (Raytracer = {}));
 const GS_EVENT_TYPE = "G3_EVENT_TYPE";
 const G3_INIT_EVENT = 1;
 const G3_RESIZE_EVENT = 2;
@@ -6524,8 +6862,10 @@ var Internal;
         fetch(path)
             .then(ret => ret.text())
             .then(src => {
+            const TriSlashRef = /^(\/\/\/\s*<reference\s+path\s*=\s*)('|")(.+?)\2.*?\/>/gm;
             var output = ts.transpile(src, {
-                module: ts.ModuleKind.None
+                module: ts.ModuleKind.None,
+                outFile: "out.js",
             });
             cb(output);
         });

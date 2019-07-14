@@ -11,6 +11,9 @@
 /// <reference path="./math/quat.ts" />
 /// <reference path="./math/quat2.ts" />
 /// <reference path="./math/funcs.ts" />
+/// <reference path="./math/v3.ts" />
+/// <reference path="./math/m4.ts" />
+/// <reference path="./math/raytracer.ts" />
 
 /// <reference path="../shared/index.ts" />
 
