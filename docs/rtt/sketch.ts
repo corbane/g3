@@ -1,9 +1,9 @@
 /// <reference no-default-lib="true"/>
 /// <reference lib="webworker" />
-/// <reference path="../../build/g3-worker.d.ts" />
+/// <reference path="../build/g3-worker.d.ts" />
 
 ;{
-    const obj         = fetchMesh     ("../_assets/gazebo.json")
+    const obj         = fetchMesh     ("../assets/gazebo.json")
     const plane       = createPlane   ()
     const tex         = fetchTexture  ('./texture.png')
     const overlay     = createTexture (256, 256)

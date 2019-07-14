@@ -1,6 +1,6 @@
 /// <reference no-default-lib="true"/>
 /// <reference lib="webworker" />
-/// <reference path="../../build/g3-worker.d.ts" />
+/// <reference path="../build/g3-worker.d.ts" />
 
 ;{
     const cube = createBox ()
