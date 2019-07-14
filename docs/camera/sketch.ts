@@ -11,9 +11,9 @@
     let shader : IShader
     let isdragging = false
     let ispan      = false
-    let lastX      = 0 
+    let lastX      = 0
     let lastY      = 0
-    let zoom       = -2
+    let zoom       = 1
     let centerX    = 0
     let centerY    = 0
     let angleX     = 0
@@ -89,8 +89,8 @@
 
             if(ispan)
             {
-                posX += deltaX / Width  * zoom * zoom 
-                posY -= deltaY / Height * zoom * zoom 
+                posX += deltaX / Width  * 4 // useOrthogonalView  (-2, 2, -2, 2, 0.1, 1000)
+                posY -= deltaY / Height * 4 //                     -2 to 2 == 4
             }
             else
             {
@@ -116,15 +116,25 @@
             ispan = false
     }
 
+    OnWheel = function ()
+    {
+        zoom += WheelDelta > 1 ? 0.1 : -0.1
+        if(zoom <= 0) zoom = 0.1
+        draw ()
+    }
+
     OnDraw = function ()
     {
         clearView ();
 
         useOrthogonalView  (-2, 2, -2, 2, 0.1, 1000)
 
-        translateView (posX, posY, zoom)
+        translateView (posX, posY, -2)
         rotateView    (angleX, 1, 0, 0)
         rotateView    (angleY, 0, 1, 0)
+
+        resetTransformations ()
+        scale (zoom)
 
         useShader(shader, {
             u_mvp     : getTransformsProjection (),
