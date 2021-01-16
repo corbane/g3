@@ -165,7 +165,7 @@ declare namespace g3
 
     // #endregion
 
-    //#region Mouse Events
+    // #region Mouse Events
 
     const _appendMouseEvents = function (v: View)
     {

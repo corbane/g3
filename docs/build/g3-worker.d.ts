@@ -79,7 +79,7 @@ declare namespace vec2 {
     const dist: typeof distance;
     const sqrDist: typeof squaredDistance;
     const sqrLen: typeof squaredLength;
-    const forEach: (a: LVec2<number>, stride: number, offset: number, count: number, fn: (thisArg: LVec2<number>, vec: LVec2<number>, arg: any) => void, arg: any) => LVec2<number>;
+    const forEach: (a: LVec2, stride: number, offset: number, count: number, fn: (thisArg: LVec2, vec: LVec2, arg: any) => void, arg: any) => LVec2<number>;
 }
 interface vec3 extends Float32Array {
 }
@@ -135,7 +135,7 @@ declare namespace vec3 {
     const sqrDist: typeof squaredDistance;
     const len: typeof _length;
     const sqrLen: typeof squaredLength;
-    const forEach: (a: LVec3<number>, stride: number, offset: number, count: number, fn: (thisArg: LVec3<number>, vec: LVec3<number>, arg: any) => void, arg: any) => LVec3<number>;
+    const forEach: (a: LVec3, stride: number, offset: number, count: number, fn: (thisArg: LVec3, vec: LVec3, arg: any) => void, arg: any) => LVec3<number>;
 }
 declare type LVec4<C = number> = vec4 | [C, C, C, C];
 interface vec4 extends Float32Array {
@@ -183,7 +183,7 @@ declare namespace vec4 {
     const sqrDist: typeof squaredDistance;
     const len: typeof _length;
     const sqrLen: typeof squaredLength;
-    const forEach: (a: LVec4<number>, stride: number, offset: number, count: number, fn: (argThis: LVec4<number>, vec: LVec4<number>, arg: any) => void, arg: any) => LVec4<number>;
+    const forEach: (a: LVec4, stride: number, offset: number, count: number, fn: (argThis: LVec4, vec: LVec4, arg: any) => void, arg: any) => LVec4<number>;
 }
 interface mat2 extends Float32Array {
 }
@@ -293,59 +293,60 @@ declare function mat4(): mat4;
 declare function mat4(m00: number, m01: number, m02: number, m03: number, m10: number, m11: number, m12: number, m13: number, m20: number, m21: number, m22: number, m23: number, m30: number, m31: number, m32: number, m33: number): mat4;
 declare namespace mat4 {
     type TVec3 = vec3 | [number, number, number];
-    function create(): mat4;
-    function clone(a: mat4): mat4;
-    function copy(out: mat4, a: mat4): mat4;
-    function fromValues(m00: number, m01: number, m02: number, m03: number, m10: number, m11: number, m12: number, m13: number, m20: number, m21: number, m22: number, m23: number, m30: number, m31: number, m32: number, m33: number): mat4;
-    function set(out: mat4, m00: number, m01: number, m02: number, m03: number, m10: number, m11: number, m12: number, m13: number, m20: number, m21: number, m22: number, m23: number, m30: number, m31: number, m32: number, m33: number): mat4;
-    function identity(out: mat4): mat4;
-    function transpose(out: mat4, a: mat4): mat4;
-    function invert(out: mat4, a: mat4): mat4 | null;
-    function adjoint(out: mat4, a: mat4): mat4;
-    function determinant(a: mat4): number;
-    function multiply(out: mat4, a: mat4, b: mat4): mat4;
-    function translate(out: mat4, a: mat4, v: TVec3): mat4;
-    function scale(out: mat4, a: mat4, v: TVec3): mat4;
-    function rotate(out: mat4, a: mat4, rad: number, axis: TVec3): mat4 | null;
-    function rotateX(out: mat4, a: mat4, rad: number): mat4;
-    function rotateY(out: mat4, a: mat4, rad: number): mat4;
-    function rotateZ(out: mat4, a: mat4, rad: number): mat4;
-    function fromTranslation(out: mat4, v: vec3): mat4;
-    function fromScaling(out: mat4, v: vec3): mat4;
-    function fromRotation(out: mat4, rad: number, axis: vec3): mat4 | null;
-    function fromXRotation(out: mat4, rad: number): mat4;
-    function fromYRotation(out: mat4, rad: number): mat4;
-    function fromZRotation(out: mat4, rad: number): mat4;
-    function fromRotationTranslation(out: mat4, q: quat, v: vec3): mat4;
-    function fromQuat2(out: mat4, a: quat2): mat4;
-    function getTranslation(out: vec3, mat: mat4): vec3;
-    function getScaling(out: vec3, mat: mat4): vec3;
-    function getRotation(out: LQuat, mat: mat4): LQuat;
-    function fromRotationTranslationScale(out: mat4, q: LQuat, v: vec3, s: vec3): mat4;
-    function fromRotationTranslationScaleOrigin(out: mat4, q: quat, v: vec3, s: vec3, o: vec3): mat4;
-    function fromQuat(out: mat4, q: quat): mat4;
-    function frustum(out: mat4, left: number, right: number, bottom: number, top: number, near: number, far: number): mat4;
-    function perspective(out: mat4, fovy: number, aspect: number, near: number, far: number): mat4;
+    export function create(): mat4;
+    export function clone(a: mat4): mat4;
+    export function copy(out: mat4, a: mat4): mat4;
+    export function fromValues(m00: number, m01: number, m02: number, m03: number, m10: number, m11: number, m12: number, m13: number, m20: number, m21: number, m22: number, m23: number, m30: number, m31: number, m32: number, m33: number): mat4;
+    export function set(out: mat4, m00: number, m01: number, m02: number, m03: number, m10: number, m11: number, m12: number, m13: number, m20: number, m21: number, m22: number, m23: number, m30: number, m31: number, m32: number, m33: number): mat4;
+    export function identity(out: mat4): mat4;
+    export function transpose(out: mat4, a: mat4): mat4;
+    export function invert(out: mat4, a: mat4): mat4 | null;
+    export function adjoint(out: mat4, a: mat4): mat4;
+    export function determinant(a: mat4): number;
+    export function multiply(out: mat4, a: mat4, b: mat4): mat4;
+    export function translate(out: mat4, a: mat4, v: TVec3): mat4;
+    export function scale(out: mat4, a: mat4, v: TVec3): mat4;
+    export function rotate(out: mat4, a: mat4, rad: number, axis: TVec3): mat4 | null;
+    export function rotateX(out: mat4, a: mat4, rad: number): mat4;
+    export function rotateY(out: mat4, a: mat4, rad: number): mat4;
+    export function rotateZ(out: mat4, a: mat4, rad: number): mat4;
+    export function fromTranslation(out: mat4, v: vec3): mat4;
+    export function fromScaling(out: mat4, v: vec3): mat4;
+    export function fromRotation(out: mat4, rad: number, axis: vec3): mat4 | null;
+    export function fromXRotation(out: mat4, rad: number): mat4;
+    export function fromYRotation(out: mat4, rad: number): mat4;
+    export function fromZRotation(out: mat4, rad: number): mat4;
+    export function fromRotationTranslation(out: mat4, q: quat, v: vec3): mat4;
+    export function fromQuat2(out: mat4, a: quat2): mat4;
+    export function getTranslation(out: vec3, mat: mat4): vec3;
+    export function getScaling(out: vec3, mat: mat4): vec3;
+    export function getRotation(out: LQuat, mat: mat4): LQuat;
+    export function fromRotationTranslationScale(out: mat4, q: LQuat, v: vec3, s: vec3): mat4;
+    export function fromRotationTranslationScaleOrigin(out: mat4, q: quat, v: vec3, s: vec3, o: vec3): mat4;
+    export function fromQuat(out: mat4, q: quat): mat4;
+    export function frustum(out: mat4, left: number, right: number, bottom: number, top: number, near: number, far: number): mat4;
+    export function perspective(out: mat4, fovy: number, aspect: number, near: number, far: number): mat4;
     type FovObject = {
         upDegrees: number;
         downDegrees: number;
         leftDegrees: number;
         rightDegrees: number;
     };
-    function perspectiveFromFieldOfView(out: mat4, fov: FovObject, near: number, far: number): mat4;
-    function ortho(out: mat4, left: number, right: number, bottom: number, top: number, near: number, far: number): mat4;
-    function lookAt(out: mat4, eye: vec3, center: vec3, up: vec3): mat4;
-    function targetTo(out: mat4, eye: vec3, target: LVec3, up: vec3): mat4;
-    function str(a: mat4): string;
-    function frob(a: mat4): number;
-    function add(out: mat4, a: mat4, b: mat4): mat4;
-    function subtract(out: mat4, a: mat4, b: mat4): mat4;
-    function multiplyScalar(out: mat4, a: mat4, b: number): mat4;
-    function multiplyScalarAndAdd(out: mat4, a: mat4, b: mat4, scale: number): mat4;
-    function exactEquals(a: mat4, b: mat4): boolean;
-    function equals(a: mat4, b: mat4): boolean;
-    const mul: typeof multiply;
-    const sub: typeof subtract;
+    export function perspectiveFromFieldOfView(out: mat4, fov: FovObject, near: number, far: number): mat4;
+    export function ortho(out: mat4, left: number, right: number, bottom: number, top: number, near: number, far: number): mat4;
+    export function lookAt(out: mat4, eye: vec3, center: vec3, up: vec3): mat4;
+    export function targetTo(out: mat4, eye: vec3, target: LVec3, up: vec3): mat4;
+    export function str(a: mat4): string;
+    export function frob(a: mat4): number;
+    export function add(out: mat4, a: mat4, b: mat4): mat4;
+    export function subtract(out: mat4, a: mat4, b: mat4): mat4;
+    export function multiplyScalar(out: mat4, a: mat4, b: number): mat4;
+    export function multiplyScalarAndAdd(out: mat4, a: mat4, b: mat4, scale: number): mat4;
+    export function exactEquals(a: mat4, b: mat4): boolean;
+    export function equals(a: mat4, b: mat4): boolean;
+    export const mul: typeof multiply;
+    export const sub: typeof subtract;
+    export {};
 }
 declare type LQuat = quat | [number, number, number, number];
 interface quat extends Float32Array {
@@ -384,9 +385,9 @@ declare namespace quat {
     const normalize: typeof vec4.normalize;
     const exactEquals: typeof vec4.exactEquals;
     const equals: typeof vec4.equals;
-    const rotationTo: (out: LQuat, a: LVec3<number>, b: LVec3<number>) => LVec4<number>;
+    const rotationTo: (out: LQuat, a: LVec3, b: LVec3) => LVec4<number>;
     const sqlerp: (out: LQuat, a: LQuat, b: LQuat, c: LQuat, d: LQuat, t: number) => LQuat;
-    const setAxes: (out: LQuat, view: LVec4<number>, right: LVec4<number>, up: LVec4<number>) => LQuat;
+    const setAxes: (out: LQuat, view: LVec4, right: LVec4, up: LVec4) => LQuat;
 }
 declare type LQuat2 = quat2 | [number, number, number, number, number, number, number, number];
 interface quat2 extends Float32Array {
@@ -526,11 +527,11 @@ declare class Raytracer {
     constructor();
     getRayForPixel(x: number, y: number): LVec3<number>;
 }
-declare const unProject: (winX: number, winY: number, winZ: number, modelview?: LMat4, projection?: LMat4, viewport?: LVec2<number>) => vec3;
+declare const unProject: (winX: number, winY: number, winZ: number, modelview?: LMat4, projection?: LMat4, viewport?: LVec2) => vec3;
 declare namespace Raytracer {
-    const hitTestBox: (origin: LVec3<number>, ray: LVec3<number>, min: LVec3<number>, max: LVec3<number>) => HitTest;
-    const hitTestSphere: (origin: LVec3<number>, ray: LVec3<number>, center: LVec3<number>, radius: number) => HitTest;
-    const hitTestTriangle: (origin: LVec3<number>, ray: LVec3<number>, a: LVec3<number>, b: LVec3<number>, c: LVec3<number>) => HitTest;
+    const hitTestBox: (origin: LVec3, ray: LVec3, min: LVec3, max: LVec3) => HitTest;
+    const hitTestSphere: (origin: LVec3, ray: LVec3, center: LVec3, radius: number) => HitTest;
+    const hitTestTriangle: (origin: LVec3, ray: LVec3, a: LVec3, b: LVec3, c: LVec3) => HitTest;
 }
 declare const GS_EVENT_TYPE = "G3_EVENT_TYPE";
 declare namespace g3 {
@@ -1198,20 +1199,20 @@ interface WebGLRenderbuffer {
 declare type GLExtension = "OES_texture_float" | "OES_texture_float_linear" | "OES_texture_half_float" | "OES_texture_half_float_linear";
 declare function useGLExtention(name: GLExtension): boolean;
 declare const CullFaceMode: {
-    "back": number;
-    "front": number;
+    back: number;
+    front: number;
     "front and back": number;
 };
 declare function useCullFace(mode?: keyof typeof CullFaceMode): void;
 declare const TestFunc: {
-    "greater": number;
-    "gequal": number;
-    "lequal": number;
-    "less": number;
-    "notequal": number;
-    "equal": number;
-    "never": number;
-    "always": number;
+    greater: number;
+    gequal: number;
+    lequal: number;
+    less: number;
+    notequal: number;
+    equal: number;
+    never: number;
+    always: number;
 };
 declare function useDepthTest(active: false): void;
 declare function useDepthTest(func?: keyof typeof TestFunc): void;
@@ -1222,13 +1223,13 @@ declare function usePolygonOffset(factor: number, units: number): void;
 declare function useSampleCoverage(value: number, invert: boolean): void;
 declare function useScissor(x: number, y: number, width: number, height: number): void;
 declare const BlendEquationMode: {
-    "add": number;
+    add: number;
     "func substract": number;
     "func reverse substract": number;
 };
 declare const BlendFuncFactor: {
-    "zero": number;
-    "one": number;
+    zero: number;
+    one: number;
     "src color": number;
     "one minus src color": number;
     "dst color": number;

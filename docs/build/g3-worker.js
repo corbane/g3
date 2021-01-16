@@ -6649,7 +6649,7 @@ var Internal;
             m_state.color = [r, g, b, a || 1];
     };
     const texCoord = function (u, v) {
-        if (u.length == 2)
+        if (typeof u == "number")
             m_state.coord = [u, v];
         else
             m_state.coord = [u[0], u[1]];

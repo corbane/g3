@@ -229,13 +229,13 @@ namespace Internal
 
 	const getGLDrawingType = function (mode: Internal.DrawingMode)
 	{
-		// "line- -stri[p]"
-		// "tria-n-gle [s]trip
-		// "tria-n-gle [f]an"
 		// "poin[t]s"
 		// "line[s]"
 		// "line[ ]loop"
 		// "tria[n]gles"
+		// "line- -stri[p]"
+		// "tria-n-gle [s]trip
+		// "tria-n-gle [f]an"
 
 		if(mode.length < 10)
 		{

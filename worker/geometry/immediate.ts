@@ -119,8 +119,8 @@ declare function endMesh        (tdraw?: boolean)                             : 
 
     const  texCoord = function (u: number|vec2, v?: number)
     {
-        if(u.length == 2)
-            m_state.coord = [u as number, v]
+        if(typeof u == "number")
+            m_state.coord = [u, v]
         else
             //@ts-ignore
             m_state.coord = [u[0], u[1]]

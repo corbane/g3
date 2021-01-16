@@ -1,47 +1,23 @@
 
-Cette bibliothèque est inspirée du projet [p5.js](https://p5js.org/).
-Elle est spécialement dédié aux application 3d sur des navigateurs moderne ou à son intégration dans des applications de bureau à l’aide d’[electron](https://electronjs.org/)
+Expérimentation de script 3D exécutable sur un thread distinct du contexte HTML.
 
-Les objectifs généraux sont:
-- Dissocié l'application 3s du reste de la page web à l'aide de thread séparer (voir [OffscreenCanvas](https://developers.google.com/web/updates/2018/08/offscreen-canvas))
-- Avoir un code source complétement typé à l'aide de [Typescript](https://www.typescriptlang.org/)
-- Avoir une autocomplétions complète
-- Exposer l'api 3d sur la portée globale (l'utilisation de thread séparé le permettant)
-- Toujours utiliser l'api à l'aide de la convention de nommage « verbe / sujet » tel que « createBox » ou « drawMesh »
+> !! Cette bibliothèque est un test d'apprentissage personnel, ne faites pas confiance à son bon fonctionnement !!
 
-> !! Cette bibliothèque est en cours de développement, ne pas ce fier à son bon fonctionnement !!
+Exemple
+-------
 
-Démarrage rapide
-==============================================================================
+Cet exemple crée un simple cube rotatif.
 
-Commencez par créer deux fichiers ; « `index.html` » et « `sketch.ts` »
+https://corbane.github.io/g3/hello-world/
 
-```html
-<!-- index.html -->
-<!DOCTYPE html>
-<html>
-    <head>
-        <style>
-            canvas {
-                width: 100%;
-                height: 100vw;
-            }
-        </style>
-        <script src="./g3.js"></script>
-    </head>
-    <body>
-        <!-- L'attribut « data-sketch » peut définir un fichier Javascript ou Typescript.
-            Dans le cas d'un fichier Typescript le code sera automatiquement compilé -->
-        <canvas data-sketch="./sketch.ts"></canvas>
-    </body>
-</html>
-```
+![](./capture.png)
+
+Fichier « `sketch.ts` »
 
 ```ts
 /* sketch.ts */
 
-// C’est trois lignes permettent l’autocomplétions dans un éditeur
-// tel que Visual-Code ou Atom
+/// autocomplétions
 /// <reference no-default-lib="true"/>
 /// <reference lib="webworker" />
 /// <reference path="./g3-worker.d.ts" />
@@ -114,3 +90,39 @@ OnDraw = function (milliseconds: number)
 play ()
 
 ```
+
+Fichier « `index.html` »
+
+```html
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            canvas {
+                width: 100%;
+                height: 100vw;
+            }
+        </style>
+        <script src="./g3.js"></script>
+    </head>
+    <body>
+        <!-- L'attribut « data-sketch » peut définir un fichier Javascript ou Typescript.
+            Dans le cas d'un fichier Typescript le code sera automatiquement compilé -->
+        <canvas data-sketch="./sketch.ts"></canvas>
+    </body>
+</html>
+```
+
+Un exemple utilisant le rendu sur la texture.
+
+https://corbane.github.io/g3/rtt/
+
+![](./capture.rtt.png)
+
+Et un autre utilisant la communication d'événement utilisateur entre le thread HTML et le thread du script.
+
+https://corbane.github.io/g3/camera/
+
+![](./capture.evt.png)
+
